@@ -43,3 +43,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Grid
+    uniqueID: 479810485
+    locked: 0
+  - name: Characters
+    uniqueID: 1415019227
+    locked: 0
