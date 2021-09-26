@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
         if (!hit)
         {
-            Debug.LogWarning("Could Not Return Hit Object");
+           
             return defaultTile;
 
         }
@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
 
     void spawnCharacter(GameObject character, Vector3 position)
     {
+        if(GetHitGameObject().tag == "Tile")
         if (GetHitGameObject().GetComponent<TileManager>().isPlacable())
         {
             GameObject spawnedCharacter = Instantiate(Pawn, position, Quaternion.identity, SpawnedCharactersParent.transform);

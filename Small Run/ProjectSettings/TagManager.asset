@@ -9,6 +9,7 @@ TagManager:
   - Tile
   - Enemy
   - Friendly
+  - Detector
   layers:
   - Default
   - TransparentFX

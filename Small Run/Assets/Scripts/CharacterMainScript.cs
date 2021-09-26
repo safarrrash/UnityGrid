@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class CharacterMainScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public class characterAtt
     {
-        
+        public string Cname, description;
+        public float health, speed, damage;
+        public float cooldown;
+        public int cost;
     }
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] CharactersSO CharacterSO;
+    public characterAtt Attributes;
+
+    private void Awake()
     {
-        
+        Attributes = new characterAtt();
+        assignAttributes();
+
     }
+
+    void assignAttributes()
+    {
+        Attributes.Cname = CharacterSO.Cname;
+        Attributes.description = CharacterSO.description;
+        Attributes.health = CharacterSO.health;
+        Attributes.speed = CharacterSO.speed;
+        Attributes.damage = CharacterSO.damage;
+        Attributes.cooldown = CharacterSO.cooldown;
+        Attributes.cost = CharacterSO.cost;
+    }
+
 }

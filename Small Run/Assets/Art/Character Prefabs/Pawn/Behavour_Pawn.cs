@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class Behavour_Pawn : MonoBehaviour
 {
-    [SerializeField] Collider2D EnemyCol, FriendlyCol;
+    
     Rigidbody2D rb;
 
-    [SerializeField] float speed = 1f;
+    [SerializeField] float speed;
     bool moving = true;
 
     void Start()
     {
-        
+        speed = GetComponent<CharacterMainScript>().Attributes.speed;
+
         rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
+        checkEnemy();
+        checkFriendly();
         moveForward(moving);
     }
 
@@ -26,19 +29,31 @@ public class Behavour_Pawn : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
-        if (collision.gameObject.tag == "Enemy")
-        {
-            print(collision.gameObject.tag);
-            moving = false;
-        }
+        
 
-        if(gameObject.transform.GetChild(0).GetComponent<FriendlyDetector>().getTag() == "Friendly")
+    }
+
+    void checkEnemy()
+    {
+        EnemyDetector detector = transform.GetChild(0).GetChild(1).GetComponent<EnemyDetector>();
+        bool isDetected = detector.isInRange();
+        if (isDetected)
         {
-            print(collision.gameObject.tag);
+            
             moving = false;
         }
     }
 
+    void checkFriendly()
+    {
+        FriendlyDetector detector = transform.GetChild(0).GetChild(0).GetComponent<FriendlyDetector>();
+        bool isDetected = detector.isInRange();
+        if (isDetected)
+        {
+            
+            moving = false;
+        }
+    }
 
     void moveForward(bool isMoving)
     {
