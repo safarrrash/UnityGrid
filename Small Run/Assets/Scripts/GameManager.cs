@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     RaycastHit2D hit;
 
     public GameObject WhiteSquare;
+    [SerializeField] GameObject SpawnedCharactersParent;
+
+    [SerializeField] GameObject Pawn;
 
     private bool PlacingMode;
     [SerializeField] private GameObject defaultTile;
@@ -19,20 +22,30 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O)) togglePlacingMode(true);
         if (Input.GetKeyDown(KeyCode.K)) togglePlacingMode(false);
 
+        if (isInPlacingMode() && Input.GetMouseButtonDown(0))
+        { 
+            spawnCharacter(Pawn, GetHitGameObject().transform.position);
+        }
+
     }
 
     void enterPlacingMode()
     {
-        if (GetHitGameObject().GetComponent<TileManager>().isPlacable() && GetHitGameObject() != WhiteSquare)
+        if (GetHitGameObject().tag == "Tile")
         {
-            GameObject selectedTile = GetHitGameObject();
-            WhiteSquare.transform.position = selectedTile.transform.position;
-        }
-        else
-        {
-            WhiteSquare.transform.position = defaultTile.transform.position;
+            if (GetHitGameObject().GetComponent<TileManager>().isPlacable())
+            {
+                GameObject selectedTile = GetHitGameObject();
+                WhiteSquare.transform.position = selectedTile.transform.position;
+            }
+            else
+            {
+                WhiteSquare.transform.position = defaultTile.transform.position;
+            }
         }
     }
+
+    
 
     GameObject GetHitGameObject()
     {
@@ -65,4 +78,12 @@ public class GameManager : MonoBehaviour
         return PlacingMode;
     }
 
+    void spawnCharacter(GameObject character, Vector3 position)
+    {
+        if (GetHitGameObject().GetComponent<TileManager>().isPlacable())
+        {
+            GameObject spawnedCharacter = Instantiate(Pawn, position, Quaternion.identity, SpawnedCharactersParent.transform);
+            
+        }
+    }
 }

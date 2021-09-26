@@ -6,6 +6,9 @@ TagManager:
   tags:
   - MapManager
   - SpawnSlot
+  - Tile
+  - Enemy
+  - Friendly
   layers:
   - Default
   - TransparentFX
