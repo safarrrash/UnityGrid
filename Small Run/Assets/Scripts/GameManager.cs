@@ -17,13 +17,13 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(isInPlacingMode()) enterPlacingMode();
+        if (isInPlacingMode()) enterPlacingMode();
 
         if (Input.GetKeyDown(KeyCode.O)) togglePlacingMode(true);
         if (Input.GetKeyDown(KeyCode.K)) togglePlacingMode(false);
 
         if (isInPlacingMode() && Input.GetMouseButtonDown(0))
-        { 
+        {
             spawnCharacter(Pawn, GetHitGameObject().transform.position);
         }
 
@@ -45,15 +45,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+
 
     GameObject GetHitGameObject()
     {
+        int layermask = (LayerMask.GetMask("Tile"));
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+        hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, layermask);
         if (!hit)
         {
-           
+
             return defaultTile;
 
         }
@@ -61,6 +62,28 @@ public class GameManager : MonoBehaviour
         {
             return hit.collider.gameObject;
         }
+    }
+
+    GameObject getTileAbove(GameObject targetTile)
+    {
+
+        int layermask = (LayerMask.GetMask("Tile"));
+        Vector3 AtilePos = targetTile.transform.position + new Vector3(0, 1f, 0);
+        ray = Camera.main.ScreenPointToRay(Camera.main.ScreenToWorldPoint(AtilePos));
+        
+        hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, layermask);
+        if (!hit)
+        {
+
+            return defaultTile;
+
+        }
+        else
+        {
+            hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            return hit.collider.gameObject;
+        }
+
     }
 
     void togglePlacingMode(bool isEnabled)

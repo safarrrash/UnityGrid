@@ -20,7 +20,7 @@ public class Behavour_Pawn : MonoBehaviour
     void Update()
     {
         checkEnemy();
-        checkFriendly();
+        //checkFriendly();
         moveForward(moving);
     }
 
