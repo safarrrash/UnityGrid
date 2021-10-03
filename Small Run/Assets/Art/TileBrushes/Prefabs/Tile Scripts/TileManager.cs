@@ -19,6 +19,7 @@ public class TileManager : MonoBehaviour
 
     public bool isPlacable()
     {
+        if (tileSO == null) print("null Warning" + this.name);
         return tileSO.isPlaceable;
     }
 }

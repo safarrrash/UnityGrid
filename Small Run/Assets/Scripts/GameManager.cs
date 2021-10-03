@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI DebugText;
+    
     Ray ray;
     RaycastHit2D hit;
 
@@ -14,6 +17,30 @@ public class GameManager : MonoBehaviour
 
     private bool PlacingMode;
     [SerializeField] private GameObject defaultTile;
+
+    GameObject[] tilesA;
+    GameObject[] PlaceableTiles;
+
+
+    private void Start()
+    {
+        /*tilesA = GameObject.FindGameObjectsWithTag("Tile");
+        print(tilesA.Length.ToString());
+        int k = 0;
+        for (int i = 0; i < tilesA.Length; i++)
+        {
+            if (tilesA[i].GetComponent<TileManager>().isPlacable())
+            {
+                
+                PlaceableTiles[k]= tilesA[i].gameObject;
+                
+                k++;
+            }
+        }
+
+        DebugText.text = tilesA.Length.ToString();
+        */
+    }
 
     void Update()
     {
@@ -27,10 +54,13 @@ public class GameManager : MonoBehaviour
             spawnCharacter(Pawn, GetHitGameObject().transform.position);
         }
 
+
     }
 
     void enterPlacingMode()
     {
+        //highlightPlaceAbleTiles(true);
+
         if (GetHitGameObject().tag == "Tile")
         {
             if (GetHitGameObject().GetComponent<TileManager>().isPlacable())
@@ -64,27 +94,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    GameObject getTileAbove(GameObject targetTile)
+    void highlightPlaceAbleTiles(bool on)
     {
 
-        int layermask = (LayerMask.GetMask("Tile"));
-        Vector3 AtilePos = targetTile.transform.position + new Vector3(0, 1f, 0);
-        ray = Camera.main.ScreenPointToRay(Camera.main.ScreenToWorldPoint(AtilePos));
+        Color tent = PlaceableTiles[0].GetComponent<SpriteRenderer>().color + new Color(10, 10, 10);
+        Color defaultColor = PlaceableTiles[0].GetComponent<SpriteRenderer>().color;
+        if (on)
+        {
+            foreach(GameObject tile in PlaceableTiles) {
+                tile.GetComponent<SpriteRenderer>().color = tent;
+            }
+        }
         
-        hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, layermask);
-        if (!hit)
+        else if (!on)
         {
-
-            return defaultTile;
-
+            foreach (GameObject tile in PlaceableTiles)
+            {
+                tile.GetComponent<SpriteRenderer>().color = defaultColor;
+            }
         }
-        else
-        {
-            hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-            return hit.collider.gameObject;
-        }
-
     }
+
 
     void togglePlacingMode(bool isEnabled)
     {

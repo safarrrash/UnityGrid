@@ -8,29 +8,57 @@ public class Behavour_Pawn : MonoBehaviour
     Rigidbody2D rb;
 
     [SerializeField] float speed;
+    [SerializeField] float shootSpeed;
+
+    float timer;
     bool moving = true;
 
+    bool isShoot = false;
+
+    Animator anim;
     void Start()
     {
         speed = GetComponent<CharacterMainScript>().Attributes.speed;
-
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        anim.SetBool("Walk", true);
     }
 
     void Update()
     {
+        timer += Time.deltaTime;
+
         checkEnemy();
         //checkFriendly();
         moveForward(moving);
+        isShoot = false;
+        if (timer >= shootSpeed)
+        {
+            if(!moving)
+            isShoot = true;
+            timer = 0;
+        }
+
+        shoot(isShoot);
+
     }
 
     
 
-    private void OnTriggerEnter2D(Collider2D collision)
+  
+    void shoot(bool isShot)
     {
-        
-        
-
+        if (isShot)
+        {
+            anim.SetBool("Shoot", true);
+            anim.SetBool("Walk", false);
+            
+        }
+        else
+        {
+            anim.SetBool("Shoot", false);
+            anim.SetBool("Walk", true);
+        }
     }
 
     void checkEnemy()
