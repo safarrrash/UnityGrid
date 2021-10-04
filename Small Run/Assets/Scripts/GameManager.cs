@@ -5,7 +5,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI DebugText;
+    public TextMeshProUGUI DebugText;
     
     Ray ray;
     RaycastHit2D hit;
@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject SpawnedCharactersParent;
 
     [SerializeField] GameObject Pawn;
+    [SerializeField] GameObject Blob;
 
     private bool PlacingMode;
     [SerializeField] private GameObject defaultTile;
@@ -53,7 +54,10 @@ public class GameManager : MonoBehaviour
         {
             spawnCharacter(Pawn, GetHitGameObject().transform.position);
         }
-
+        if (isInPlacingMode() && Input.GetMouseButtonDown(1))
+        {
+            spawnCharacterAny(Blob, GetHitGameObject().transform.position);
+        }
 
     }
 
@@ -136,8 +140,16 @@ public class GameManager : MonoBehaviour
         if(GetHitGameObject().tag == "Tile")
         if (GetHitGameObject().GetComponent<TileManager>().isPlacable())
         {
-            GameObject spawnedCharacter = Instantiate(Pawn, position, Quaternion.identity, SpawnedCharactersParent.transform);
+            GameObject spawnedCharacter = Instantiate(character, position, Quaternion.identity, SpawnedCharactersParent.transform);
             
+        }
+    }
+
+    void spawnCharacterAny(GameObject character, Vector3 position)
+    {
+        if (GetHitGameObject().tag == "Tile")
+        {
+            GameObject spawnedCharacter = Instantiate(character, position, Quaternion.identity, SpawnedCharactersParent.transform);
         }
     }
 }

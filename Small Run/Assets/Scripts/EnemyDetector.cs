@@ -5,26 +5,26 @@ using UnityEngine;
 public class EnemyDetector : MonoBehaviour
 {
     bool detectedE;
-    int inRange = 0;
+    
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Enemy")
         {
-            inRange++;
+            
             detectedE = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        inRange--;
-        if (inRange == 0) detectedE = false;
+        
+        if (collision.tag == "Enemy") detectedE = false;
 
     }
 
-    public bool isInRange()
+    public bool isDetected()
     {
         return detectedE;
     }

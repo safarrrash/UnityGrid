@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Behavour_Pawn : MonoBehaviour
+public class Pawn_Behavour : MonoBehaviour
 {
     
     Rigidbody2D rb;
@@ -29,8 +29,9 @@ public class Behavour_Pawn : MonoBehaviour
         timer += Time.deltaTime;
 
         checkEnemy();
-        //checkFriendly();
+        
         moveForward(moving);
+
         isShoot = false;
         if (timer >= shootSpeed)
         {
@@ -63,25 +64,14 @@ public class Behavour_Pawn : MonoBehaviour
 
     void checkEnemy()
     {
-        EnemyDetector detector = transform.GetChild(0).GetChild(1).GetComponent<EnemyDetector>();
-        bool isDetected = detector.isInRange();
+        EnemyDetector detector = transform.GetComponentInChildren<EnemyDetector>();
+        bool isDetected = detector.isDetected();
         if (isDetected)
         {
-            
             moving = false;
         }
     }
 
-    void checkFriendly()
-    {
-        FriendlyDetector detector = transform.GetChild(0).GetChild(0).GetComponent<FriendlyDetector>();
-        bool isDetected = detector.isInRange();
-        if (isDetected)
-        {
-            
-            moving = false;
-        }
-    }
 
     void moveForward(bool isMoving)
     {

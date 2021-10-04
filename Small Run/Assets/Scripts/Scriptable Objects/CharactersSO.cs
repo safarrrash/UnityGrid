@@ -13,4 +13,5 @@ public class CharactersSO : ScriptableObject
     public float cooldown;
     public int cost;
 
+    public float Range;
 }
