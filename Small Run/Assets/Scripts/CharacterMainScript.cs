@@ -9,7 +9,7 @@ public class CharacterMainScript : MonoBehaviour
         public string Cname, description;
         public float health, speed, damage;
         public float cooldown;
-        public int cost;
+        public int cost, range;
     }
 
     [SerializeField] CharactersSO CharacterSO;
@@ -31,6 +31,7 @@ public class CharacterMainScript : MonoBehaviour
         Attributes.damage = CharacterSO.damage;
         Attributes.cooldown = CharacterSO.cooldown;
         Attributes.cost = CharacterSO.cost;
+        Attributes.range = CharacterSO.Range;
     }
 
 }

@@ -9,7 +9,7 @@ public class Pawn_Behavour : MonoBehaviour
 
     [SerializeField] float speed;
     [SerializeField] float shootSpeed;
-
+    [SerializeField] GameObject target;
     float timer;
     bool moving = true;
 
@@ -28,8 +28,17 @@ public class Pawn_Behavour : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        checkEnemy();
+        checkTarget();
         
+        if(target != null)
+        {
+            moving = false;
+        }
+        else if (target == null)
+        {
+            moving = true;
+        }
+
         moveForward(moving);
 
         isShoot = false;
@@ -40,20 +49,22 @@ public class Pawn_Behavour : MonoBehaviour
             timer = 0;
         }
 
-        shoot(isShoot);
+        shoot(isShoot, target);
 
     }
 
     
 
   
-    void shoot(bool isShot)
+    void shoot(bool isShot, GameObject target)
     {
         if (isShot)
         {
             anim.SetBool("Shoot", true);
             anim.SetBool("Walk", false);
-            
+
+            CharacterMainScript targetMain = target.GetComponent<CharacterMainScript>();
+            targetMain.Attributes.health -= GetComponent<CharacterMainScript>().Attributes.damage;
         }
         else
         {
@@ -62,16 +73,17 @@ public class Pawn_Behavour : MonoBehaviour
         }
     }
 
-    void checkEnemy()
+    void checkTarget()
     {
         EnemyDetector detector = transform.GetComponentInChildren<EnemyDetector>();
         bool isDetected = detector.isDetected();
         if (isDetected)
         {
-            moving = false;
+            target = getTarget();
         }
     }
 
+    
 
     void moveForward(bool isMoving)
     {
@@ -79,5 +91,10 @@ public class Pawn_Behavour : MonoBehaviour
         {
             rb.transform.Translate(Vector2.right * Time.deltaTime * speed);
         }
+    }
+
+    public GameObject getTarget()
+    {
+        return transform.GetComponentInChildren<EnemyDetector>().getTarget();
     }
 }

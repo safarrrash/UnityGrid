@@ -1145,11 +1145,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 220b2309cdde6414a86ee93d33d3d609, type: 3}
---- !u!1 &83078880 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2552123004407545475, guid: dbd1af6aae3b72944ac647b8cef76bb0, type: 3}
-  m_PrefabInstance: {fileID: 1327354636}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &85792907
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3157,7 +3152,7 @@ MonoBehaviour:
   WhiteSquare: {fileID: 604847399}
   SpawnedCharactersParent: {fileID: 790436877}
   Pawn: {fileID: 8948360571413242138, guid: 2b01f0a7f889821499427b8caf3043f0, type: 3}
-  Blob: {fileID: 83078880}
+  Blob: {fileID: 2552123004407545475, guid: dbd1af6aae3b72944ac647b8cef76bb0, type: 3}
   defaultTile: {fileID: 981091389}
 --- !u!4 &205350892
 Transform:
@@ -21624,6 +21619,7 @@ GameObject:
   - component: {fileID: 1474104099}
   - component: {fileID: 1474104098}
   - component: {fileID: 1474104100}
+  - component: {fileID: 1474104101}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -21722,6 +21718,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1474104101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474104097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b000bb630aab59549b45434ea14d924a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CharacterSO: {fileID: 0}
 --- !u!1001 &1474212004
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32266,11 +32275,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1673167355566053685, guid: 2b01f0a7f889821499427b8caf3043f0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.57
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1673167355566053685, guid: 2b01f0a7f889821499427b8caf3043f0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.5
+      value: -1.507
       objectReference: {fileID: 0}
     - target: {fileID: 1673167355566053685, guid: 2b01f0a7f889821499427b8caf3043f0, type: 3}
       propertyPath: m_LocalPosition.z

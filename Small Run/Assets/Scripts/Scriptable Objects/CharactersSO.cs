@@ -5,6 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Character", menuName = "Custom/Character")]
 public class CharactersSO : ScriptableObject
 {
+    public enum Type
+    {
+        Troop,
+        Building,
+        Spell
+    }
+
+    public Type CharacterType;
     public Sprite Icon, Ghost;
     [Space]
     public string Cname;
@@ -13,5 +21,5 @@ public class CharactersSO : ScriptableObject
     public float cooldown;
     public int cost;
 
-    public float Range;
+    public int Range;
 }

@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
     private bool PlacingMode;
     [SerializeField] private GameObject defaultTile;
 
-    GameObject[] tilesA;
     GameObject[] PlaceableTiles;
 
 

@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98700dcaef47b574cab1dc5274a28791, type: 3}
   m_Name: Pawn
   m_EditorClassIdentifier: 
+  CharacterType: 0
   Icon: {fileID: 5297352998970602430, guid: 87fc96e3641619540ae36c8d23d4c5e2, type: 3}
   Ghost: {fileID: 2533179969505074583, guid: 87fc96e3641619540ae36c8d23d4c5e2, type: 3}
   Cname: Pawn
-  description: Born be pawn
+  description: pawn
   health: 50
   speed: 0.5
   damage: 20
   cooldown: 5
   cost: 20
+  Range: 3
