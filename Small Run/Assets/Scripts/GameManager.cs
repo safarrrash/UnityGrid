@@ -24,22 +24,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        /*tilesA = GameObject.FindGameObjectsWithTag("Tile");
-        print(tilesA.Length.ToString());
-        int k = 0;
-        for (int i = 0; i < tilesA.Length; i++)
-        {
-            if (tilesA[i].GetComponent<TileManager>().isPlacable())
-            {
-                
-                PlaceableTiles[k]= tilesA[i].gameObject;
-                
-                k++;
-            }
-        }
-
-        DebugText.text = tilesA.Length.ToString();
-        */
+        
     }
 
     void Update()
@@ -62,8 +47,7 @@ public class GameManager : MonoBehaviour
 
     void enterPlacingMode()
     {
-        //highlightPlaceAbleTiles(true);
-
+        
         if (GetHitGameObject().tag == "Tile")
         {
             if (GetHitGameObject().GetComponent<TileManager>().isPlacable())
@@ -97,26 +81,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void highlightPlaceAbleTiles(bool on)
-    {
-
-        Color tent = PlaceableTiles[0].GetComponent<SpriteRenderer>().color + new Color(10, 10, 10);
-        Color defaultColor = PlaceableTiles[0].GetComponent<SpriteRenderer>().color;
-        if (on)
-        {
-            foreach(GameObject tile in PlaceableTiles) {
-                tile.GetComponent<SpriteRenderer>().color = tent;
-            }
-        }
-        
-        else if (!on)
-        {
-            foreach (GameObject tile in PlaceableTiles)
-            {
-                tile.GetComponent<SpriteRenderer>().color = defaultColor;
-            }
-        }
-    }
+    
 
 
     void togglePlacingMode(bool isEnabled)
@@ -139,7 +104,7 @@ public class GameManager : MonoBehaviour
         if(GetHitGameObject().tag == "Tile")
         if (GetHitGameObject().GetComponent<TileManager>().isPlacable())
         {
-            GameObject spawnedCharacter = Instantiate(character, position, Quaternion.identity, SpawnedCharactersParent.transform);
+            Instantiate(character, position, Quaternion.identity, SpawnedCharactersParent.transform);
             
         }
     }
@@ -148,7 +113,7 @@ public class GameManager : MonoBehaviour
     {
         if (GetHitGameObject().tag == "Tile")
         {
-            GameObject spawnedCharacter = Instantiate(character, position, Quaternion.identity, SpawnedCharactersParent.transform);
+            Instantiate(character, position, Quaternion.identity, SpawnedCharactersParent.transform);
         }
     }
 }

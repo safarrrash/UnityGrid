@@ -22,4 +22,5 @@ MonoBehaviour:
   damage: 20
   cooldown: 5
   cost: 20
+  ShotSpeed: 3
   Range: 3

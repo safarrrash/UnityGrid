@@ -20,6 +20,6 @@ public class CharactersSO : ScriptableObject
     public float health, speed, damage;
     public float cooldown;
     public int cost;
-
+    public float ShotSpeed;
     public int Range;
 }

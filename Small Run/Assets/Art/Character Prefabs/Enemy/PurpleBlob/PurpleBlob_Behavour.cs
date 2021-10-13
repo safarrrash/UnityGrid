@@ -8,8 +8,10 @@ public class PurpleBlob_Behavour : MonoBehaviour
     Rigidbody2D rb;
     CharacterMainScript mainScript;
     [SerializeField] float speed;
-    [SerializeField] GameObject Target;
+    [SerializeField] GameObject target;
     bool moving = true;
+    float timer;
+    float attSpeed;
 
     private void Start()
     {
@@ -17,15 +19,29 @@ public class PurpleBlob_Behavour : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         speed = gameObject.GetComponent<CharacterMainScript>().Attributes.speed;
         Detector = transform.GetComponentInChildren<FriendlyDetector>();
+        attSpeed = mainScript.Attributes.AttSpeed;
     }
     
     private void Update()
     {
+        timer += Time.deltaTime;
         GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().DebugText.text = Detector.isDetected().ToString();
         if (Detector.isDetected()) moving = false;
         moveForward(moving);
 
+        checkTarget();
+
         checkHealth();
+
+        if(timer >= attSpeed)
+        {
+            if (target != null)
+            {
+                attack(target);
+                timer = 0;
+            }
+        }
+        
 
     }
 
@@ -40,8 +56,28 @@ public class PurpleBlob_Behavour : MonoBehaviour
 
     void checkHealth()
     {
-        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().DebugText.text = mainScript.Attributes.health.ToString();
-        if (mainScript.Attributes.health <= 0) death();
+        
+        if (mainScript.SelfAttribute.health <= 0) death();
+    }
+
+    void checkTarget()
+    {
+        FriendlyDetector detector = transform.GetComponentInChildren<FriendlyDetector>();
+        bool isDetected = detector.isDetected();
+        if (isDetected)
+        {
+            target = getTarget();
+        }
+    }
+
+    void attack(GameObject target)
+    {
+        target.GetComponent<CharacterMainScript>().SelfDamage(GetComponent<CharacterMainScript>().SelfAttribute.damage);
+    }
+
+    GameObject getTarget()
+    {
+        return transform.GetComponentInChildren<FriendlyDetector>().getTarget();
     }
 
     void death()

@@ -7,9 +7,15 @@ public class Pawn_Behavour : MonoBehaviour
     
     Rigidbody2D rb;
 
-    [SerializeField] float speed;
-    [SerializeField] float shootSpeed;
+    //[SerializeField] float speed;
     [SerializeField] GameObject target;
+    [SerializeField] GameObject Healthbar;
+
+    float health, speed, damage, cooldown, attSpeed;
+    int range;
+
+    CharacterMainScript mainScript;
+
     float timer;
     bool moving = true;
 
@@ -18,7 +24,9 @@ public class Pawn_Behavour : MonoBehaviour
     Animator anim;
     void Start()
     {
-        speed = GetComponent<CharacterMainScript>().Attributes.speed;
+        mainScript = GetComponent<CharacterMainScript>();
+        checkAttributes();
+
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         anim.SetBool("Walk", true);
@@ -26,7 +34,12 @@ public class Pawn_Behavour : MonoBehaviour
 
     void Update()
     {
+        checkAttributes();
+
+
         timer += Time.deltaTime;
+
+        setHealthBar(health);
 
         checkTarget();
         
@@ -42,7 +55,7 @@ public class Pawn_Behavour : MonoBehaviour
         moveForward(moving);
 
         isShoot = false;
-        if (timer >= shootSpeed)
+        if (timer >= attSpeed)
         {
             if(!moving)
             isShoot = true;
@@ -64,7 +77,7 @@ public class Pawn_Behavour : MonoBehaviour
             anim.SetBool("Walk", false);
 
             CharacterMainScript targetMain = target.GetComponent<CharacterMainScript>();
-            targetMain.Attributes.health -= GetComponent<CharacterMainScript>().Attributes.damage;
+            targetMain.SelfAttribute.health -= mainScript.SelfAttribute.damage;
         }
         else
         {
@@ -83,7 +96,21 @@ public class Pawn_Behavour : MonoBehaviour
         }
     }
 
-    
+    void setHealthBar(float amount)
+    {
+        if (Healthbar.transform.localScale.x >= 0)
+        Healthbar.transform.localScale = new Vector3(amount / (GetComponent<CharacterMainScript>().Attributes.health), Healthbar.transform.localScale.y);
+    }
+
+    void checkAttributes()
+    {
+        health = mainScript.SelfAttribute.health;
+        damage = mainScript.SelfAttribute.damage;
+        speed = mainScript.SelfAttribute.speed;
+        attSpeed = mainScript.SelfAttribute.AttSpeed;
+        range = mainScript.SelfAttribute.range;
+       
+    }
 
     void moveForward(bool isMoving)
     {
@@ -93,6 +120,11 @@ public class Pawn_Behavour : MonoBehaviour
         }
     }
 
+    public void SelfDamage(float amount)
+    {
+        health-=amount;
+    }
+    
     public GameObject getTarget()
     {
         return transform.GetComponentInChildren<EnemyDetector>().getTarget();
