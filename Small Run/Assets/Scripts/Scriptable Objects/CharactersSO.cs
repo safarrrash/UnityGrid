@@ -5,14 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Character", menuName = "Custom/Character")]
 public class CharactersSO : ScriptableObject
 {
-    public enum Type
-    {
-        Troop,
-        Building,
-        Spell
-    }
+    
 
-    public Type CharacterType;
+    public CharacterMainScript.CharacterType CharacterType;
     public Sprite Icon, Ghost;
     [Space]
     public string Cname;

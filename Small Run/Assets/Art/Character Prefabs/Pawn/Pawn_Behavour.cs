@@ -6,29 +6,23 @@ public class Pawn_Behavour : MonoBehaviour
 {
     
     Rigidbody2D rb;
-
-    //[SerializeField] float speed;
-    [SerializeField] GameObject target;
-    [SerializeField] GameObject Healthbar;
-
-    float health, speed, damage, cooldown, attSpeed;
-    int range;
-
     CharacterMainScript mainScript;
 
-    float timer;
-    bool moving = true;
+    GameObject target; 
 
-    bool isShoot = false;
-
+    float speed;
+    bool moving;
+    bool canShoot = false;
+    bool attacked = false;
     Animator anim;
+
     void Start()
     {
         mainScript = GetComponent<CharacterMainScript>();
         checkAttributes();
-
+        
         anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        rb = mainScript.rigidBody;
         anim.SetBool("Walk", true);
     }
 
@@ -36,33 +30,13 @@ public class Pawn_Behavour : MonoBehaviour
     {
         checkAttributes();
 
-
-        timer += Time.deltaTime;
-
-        setHealthBar(health);
-
         checkTarget();
-        
-        if(target != null)
-        {
-            moving = false;
-        }
-        else if (target == null)
-        {
-            moving = true;
-        }
+        checkMoving();
+        checkShooting();
 
-        moveForward(moving);
+        moveForward(mainScript.CanMove());
 
-        isShoot = false;
-        if (timer >= attSpeed)
-        {
-            if(!moving)
-            isShoot = true;
-            timer = 0;
-        }
-
-        shoot(isShoot, target);
+        shoot(canShoot, target);
 
     }
 
@@ -75,10 +49,17 @@ public class Pawn_Behavour : MonoBehaviour
         {
             anim.SetBool("Shoot", true);
             anim.SetBool("Walk", false);
-
-            CharacterMainScript targetMain = target.GetComponent<CharacterMainScript>();
-            targetMain.SelfAttribute.health -= mainScript.SelfAttribute.damage;
+            if (target != null)
+            {
+                target.GetComponent<CharacterMainScript>().SelfDamage(mainScript.SelfAttribute.damage);
+                attacked = true;
+                if (!target.GetComponent<CharacterMainScript>().IsAlive())
+                {
+                    mainScript.targetManager.clearTarget();
+                }
+            }
         }
+
         else
         {
             anim.SetBool("Shoot", false);
@@ -88,28 +69,17 @@ public class Pawn_Behavour : MonoBehaviour
 
     void checkTarget()
     {
-        EnemyDetector detector = transform.GetComponentInChildren<EnemyDetector>();
-        bool isDetected = detector.isDetected();
+        bool isDetected = mainScript.targetManager.haveTarget;
         if (isDetected)
         {
-            target = getTarget();
+            target = mainScript.targetManager.getTarget();
         }
     }
 
-    void setHealthBar(float amount)
-    {
-        if (Healthbar.transform.localScale.x >= 0)
-        Healthbar.transform.localScale = new Vector3(amount / (GetComponent<CharacterMainScript>().Attributes.health), Healthbar.transform.localScale.y);
-    }
 
     void checkAttributes()
     {
-        health = mainScript.SelfAttribute.health;
-        damage = mainScript.SelfAttribute.damage;
         speed = mainScript.SelfAttribute.speed;
-        attSpeed = mainScript.SelfAttribute.AttSpeed;
-        range = mainScript.SelfAttribute.range;
-       
     }
 
     void moveForward(bool isMoving)
@@ -120,13 +90,32 @@ public class Pawn_Behavour : MonoBehaviour
         }
     }
 
-    public void SelfDamage(float amount)
+    void checkMoving()
     {
-        health-=amount;
+        if (target != null)
+        {
+            moving = false;
+        }
+
+        else if (target == null)
+        {
+            moving = true;
+        }
+
+        mainScript.setCanMove(moving);
+
     }
-    
-    public GameObject getTarget()
+
+    void checkShooting()
     {
-        return transform.GetComponentInChildren<EnemyDetector>().getTarget();
+        if (attacked)
+        {
+            mainScript.setCanAttack(false);
+            attacked = false;
+        }
+
+        canShoot = mainScript.CanAttack();
     }
+
+
 }

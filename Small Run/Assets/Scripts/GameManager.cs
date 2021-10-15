@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public TextMeshProUGUI DebugText;
     
+
     Ray ray;
     RaycastHit2D hit;
 
@@ -24,11 +25,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
         
     }
 
     void Update()
     {
+        
         if (isInPlacingMode()) enterPlacingMode();
 
         if (Input.GetKeyDown(KeyCode.O)) togglePlacingMode(true);
@@ -42,12 +45,12 @@ public class GameManager : MonoBehaviour
         {
             spawnCharacterAny(Blob, GetHitGameObject().transform.position);
         }
-
+        
     }
 
     void enterPlacingMode()
     {
-        
+
         if (GetHitGameObject().tag == "Tile")
         {
             if (GetHitGameObject().GetComponent<TileManager>().isPlacable())
@@ -81,7 +84,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+
 
 
     void togglePlacingMode(bool isEnabled)
@@ -101,12 +104,12 @@ public class GameManager : MonoBehaviour
 
     void spawnCharacter(GameObject character, Vector3 position)
     {
-        if(GetHitGameObject().tag == "Tile")
-        if (GetHitGameObject().GetComponent<TileManager>().isPlacable())
-        {
-            Instantiate(character, position, Quaternion.identity, SpawnedCharactersParent.transform);
-            
-        }
+        if (GetHitGameObject().tag == "Tile")
+            if (GetHitGameObject().GetComponent<TileManager>().isPlacable())
+            {
+                Instantiate(character, position, Quaternion.identity, SpawnedCharactersParent.transform);
+
+            }
     }
 
     void spawnCharacterAny(GameObject character, Vector3 position)
@@ -116,4 +119,9 @@ public class GameManager : MonoBehaviour
             Instantiate(character, position, Quaternion.identity, SpawnedCharactersParent.transform);
         }
     }
+
+
+
+    
+
 }

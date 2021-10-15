@@ -19,7 +19,7 @@ public class PurpleBlob_Behavour : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         speed = gameObject.GetComponent<CharacterMainScript>().Attributes.speed;
         Detector = transform.GetComponentInChildren<FriendlyDetector>();
-        attSpeed = mainScript.Attributes.AttSpeed;
+        attSpeed = mainScript.Attributes.attSpeed;
     }
     
     private void Update()
