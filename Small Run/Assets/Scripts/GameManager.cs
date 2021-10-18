@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    void togglePlacingMode(bool isEnabled)
+    public void togglePlacingMode(bool isEnabled)
     {
         if (isEnabled) PlacingMode = true;
         else if (!isEnabled)

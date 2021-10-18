@@ -4,45 +4,96 @@ using UnityEngine;
 
 public class PurpleBlob_Behavour : MonoBehaviour
 {
-    FriendlyDetector Detector;
     Rigidbody2D rb;
     CharacterMainScript mainScript;
-    [SerializeField] float speed;
     [SerializeField] GameObject target;
-    bool moving = true;
-    float timer;
-    float attSpeed;
+
+
+    float speed;
+    bool moving;
+    bool canShoot = false;
+    bool attacked = false;
 
     private void Start()
     {
         mainScript = GetComponent<CharacterMainScript>();
-        rb = GetComponent<Rigidbody2D>();
-        speed = gameObject.GetComponent<CharacterMainScript>().Attributes.speed;
-        Detector = transform.GetComponentInChildren<FriendlyDetector>();
-        attSpeed = mainScript.Attributes.attSpeed;
+        checkAttributes();
+        rb = mainScript.rigidBody;
     }
     
     private void Update()
     {
-        timer += Time.deltaTime;
-        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().DebugText.text = Detector.isDetected().ToString();
-        if (Detector.isDetected()) moving = false;
+        checkTarget();
+        checkMoving();
+        checkShooting();
         moveForward(moving);
 
         checkTarget();
 
         checkHealth();
 
-        if(timer >= attSpeed)
+        moveForward(mainScript.CanMove());
+
+        attack(canShoot, target);
+
+
+    }
+
+    void attack(bool isShot, GameObject target)
+    {
+        if (isShot)
         {
             if (target != null)
             {
-                attack(target);
-                timer = 0;
+                target.GetComponent<CharacterMainScript>().SelfDamage(mainScript.SelfAttribute.damage);
+                attacked = true;
+                if (!target.GetComponent<CharacterMainScript>().IsAlive())
+                {
+                    mainScript.targetManager.clearTarget();
+                }
             }
         }
-        
 
+        else
+        {
+            
+        }
+    }
+
+    void checkTarget()
+    {
+        bool isDetected = mainScript.targetManager.haveTarget;
+        if (isDetected)
+        {
+            target = mainScript.targetManager.getTarget();
+        }
+    }
+
+    void checkMoving()
+    {
+        if (target != null)
+        {
+            moving = false;
+        }
+
+        else if (target == null)
+        {
+            moving = true;
+        }
+
+        mainScript.setCanMove(moving);
+
+    }
+
+    void checkShooting()
+    {
+        if (attacked)
+        {
+            mainScript.setCanAttack(false);
+            attacked = false;
+        }
+
+        canShoot = mainScript.CanAttack();
     }
 
 
@@ -60,31 +111,16 @@ public class PurpleBlob_Behavour : MonoBehaviour
         if (mainScript.SelfAttribute.health <= 0) death();
     }
 
-    void checkTarget()
-    {
-        FriendlyDetector detector = transform.GetComponentInChildren<FriendlyDetector>();
-        bool isDetected = detector.isDetected();
-        if (isDetected)
-        {
-            target = getTarget();
-        }
-    }
-
-    void attack(GameObject target)
-    {
-        target.GetComponent<CharacterMainScript>().SelfDamage(GetComponent<CharacterMainScript>().SelfAttribute.damage);
-    }
-
-    GameObject getTarget()
-    {
-        return transform.GetComponentInChildren<FriendlyDetector>().getTarget();
-    }
-
     void death()
     {
         Destroy(this, 0.5f);
         this.gameObject.SetActive(false);
         
+    }
+
+    void checkAttributes()
+    {
+        speed = mainScript.SelfAttribute.speed;
     }
 
 }

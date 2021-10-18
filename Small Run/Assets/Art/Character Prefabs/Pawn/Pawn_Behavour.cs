@@ -14,6 +14,7 @@ public class Pawn_Behavour : MonoBehaviour
     bool moving;
     bool canShoot = false;
     bool attacked = false;
+
     Animator anim;
 
     void Start()

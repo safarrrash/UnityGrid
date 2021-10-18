@@ -18,7 +18,7 @@ MonoBehaviour:
   Cname: PurpleBlob
   description: 
   health: 40
-  speed: 1
+  speed: 0.75
   damage: 20
   cooldown: 0
   cost: 0
